@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import SendIcon from "@material-ui/icons/Send";
+import "./App.css";
+import Chat from "./components/Chat";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import { connect } from "react-redux";
+import socketClient from 'socket.io-client'
+import { BrowserRouter, Route } from "react-router-dom";
 
-function App() {
+// const socket = socketClient("http://localhost:8080")
+// socket.on('connect', ()=>{  
+  
+// })
+
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+    <>
+      <nav className="navbar navbar-dark bg-dark p-2 ">
+        <a className="navbar-brand" href="#">
+          Chat Application
         </a>
-      </header>
-    </div>
+      </nav>
+      <BrowserRouter>
+        <Route exact path="/chat" component={Home}></Route>
+        <Route exact path="/" component={Login}></Route>
+      </BrowserRouter>
+      {/* <Home/> */}
+        {/* {
+          props.isloggedin?  <Home/> :  <Login/> 
+        } */}
+    </>
   );
 }
-
-export default App;
+export default connect(function(state,props){
+  return {
+    isloggedin: state?.isloggedin
+  }
+})(App);
