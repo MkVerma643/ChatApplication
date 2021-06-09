@@ -12,7 +12,7 @@ console.log("asd",props.people)
       <div class="inbox_people">
         <div class="headind_srch">
           <div class="recent_heading">
-            <h4>Recent</h4>
+            <h4>Online</h4>
           </div>
           <div class="srch_bar">
             <div class="stylish-input-group">
