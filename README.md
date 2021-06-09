@@ -15,9 +15,9 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 Enter Username in the browser '/' route 
-and you can on the left panel people who are currently online
+and you can see on the left panel people who are currently online
 you can directly broadcast a message (http://localhost:3000/chat)
-send a custome message to a room
+send a custome message to a room (http://localhost:3000/chat/id)
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
