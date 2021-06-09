@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Users(props) {
 console.log("asd",props.people)
@@ -36,17 +37,21 @@ console.log("asd",props.people)
               </div>
             </div> */}
           {props.people.length > 0? props.people.map((user) => {
-          // if(props.user.name != user.name){
-            return (<div class="chat_list" key={user.id}>
+            //add here a link which will redirect to http:localhost:3000/chat/id for p2p chat
+          if(props.user.name != user.name){
+            return (
+              <Link to={`/chat/${user.id}`}>
+              <div class="chat_list" key={user.id}>
               <div class="chat_people">
                 <div class="chat_img"> <AccountCircleIcon/> </div>
                 <div class="chat_ib">
-                  <h5>{props.user.name === user.name? "Private":user.name} <span class="chat_date">0</span></h5>
+                  <h5>{user.name} <span class="chat_date">0</span></h5>
                   <p>ID: {user.id}</p>
                 </div>
               </div>
-            </div>)
-          // }
+            </div></Link>
+            )
+          }
           }) : ''}
         </div>
       </div>

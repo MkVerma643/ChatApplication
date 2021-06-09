@@ -11,7 +11,7 @@ io.on('connection', socket =>{
 
     socket.on("join",room=>{
         console.log("newuser joined")
-        socket.join(room)
+        socket.join(room.name)
         io.emit("listen-client",room)
     })
 
@@ -19,6 +19,9 @@ io.on('connection', socket =>{
     socket.on('message',payload => {
         console.log('Message received on server: ', payload)
         io.emit('message',payload)
+    })
+    socket.on('custom-message',payload =>{
+        socket.to(payload.to).emit('message',payload)
     })
 })
 

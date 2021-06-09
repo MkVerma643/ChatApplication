@@ -5,7 +5,7 @@ import Chat from "./components/Chat";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import { connect } from "react-redux";
-import socketClient from 'socket.io-client'
+import io from 'socket.io-client'
 import { BrowserRouter, Route } from "react-router-dom";
 
 // const socket = socketClient("http://localhost:8080")
@@ -24,6 +24,7 @@ function App(props) {
       <BrowserRouter>
         <Route exact path="/chat" component={Home}></Route>
         <Route exact path="/" component={Login}></Route>
+        <Route exact path="/chat/:id"><Home custom={true}/></Route>
       </BrowserRouter>
       {/* <Home/> */}
         {/* {

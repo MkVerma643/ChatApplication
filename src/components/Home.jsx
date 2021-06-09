@@ -4,18 +4,19 @@ import SendIcon from "@material-ui/icons/Send";
 import Users from "./Users";
 import { connect } from "react-redux";
 import io from "socket.io-client";
-
+import { useParams } from "react-router";
 const socket = io("http://localhost:7000");
 function Chat(props) {
   if (props.isloggedin != true) {
     props.history.push("/");
   }
   console.log("chatssss", props);
+  const params = useParams()
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [yourID, setYourID] = useState();
   const [people, setPeople] = useState([]);
-  console.log("chatttttsssss",chat)
+  console.log("chatttttsssss", chat);
   useEffect(() => {
     socket.on("yourid", (id) => {
       setYourID(id);
@@ -33,13 +34,27 @@ function Chat(props) {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(message);
-    const msgData = {
+    if (props.custom) {
+      console.log("parmas",params.id)
+      console.log(message);
+      const msgData = {
       msg: message,
       id: props.user.id,
       time: new Date(),
+      to: params.id
     };
-    socket.emit("message", msgData);
+    socket.emit("custom-message", msgData);
+
+    } else {
+      console.log(message);
+      const msgData = {
+        msg: message,
+        id: props.user.id,
+        time: new Date(),
+      };
+      socket.emit("message", msgData);
+    }
+
     setMessage("");
   };
 
