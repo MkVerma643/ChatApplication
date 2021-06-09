@@ -24,7 +24,7 @@ function Chat(props) {
 
     socket.on("listen-client", (user) => {
       console.log("new online user found.....", user);
-      setPeople([...people, user]);
+      setPeople(user);
     });
 
     socket.on("message", (payload) => {

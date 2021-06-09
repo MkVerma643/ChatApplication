@@ -38,9 +38,9 @@ console.log("asd",props.people)
             </div> */}
           {props.people.length > 0? props.people.map((user) => {
             //add here a link which will redirect to http:localhost:3000/chat/id for p2p chat
-          if(props.user.name != user.name){
+          // if(props.user.name != user.name){
             return (
-              <Link to={`/chat/${user.id}`}>
+              <Link to={`/chat/${user.name}`}>
               <div class="chat_list" key={user.id}>
               <div class="chat_people">
                 <div class="chat_img"> <AccountCircleIcon/> </div>
@@ -51,7 +51,7 @@ console.log("asd",props.people)
               </div>
             </div></Link>
             )
-          }
+          // }
           }) : ''}
         </div>
       </div>

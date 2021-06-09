@@ -5,14 +5,16 @@ const io = require('socket.io')(server,{
         origin:'*',
     }
 })
-
+var users = []
 io.on('connection', socket =>{
     console.log('connection made successfully',socket.id)
-
+    
     socket.on("join",room=>{
         console.log("newuser joined")
         socket.join(room.name)
-        io.emit("listen-client",room)
+        users.push(room)
+        console.log("usersssss",users)
+        io.emit("listen-client",users)
     })
 
     socket.emit("yourid",socket.id)
@@ -21,7 +23,13 @@ io.on('connection', socket =>{
         io.emit('message',payload)
     })
     socket.on('custom-message',payload =>{
+        console.log("send mesg to...",payload.to)
         socket.to(payload.to).emit('message',payload)
+        
+    })
+
+    socket.on("disconnect", () => {
+        users.filter(user => user.id != socket.id)
     })
 })
 
