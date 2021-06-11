@@ -2,11 +2,21 @@ import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
 import socket from './socket'
 import {login} from '../reduxstore/thunk'
+import immer from 'immer'
 function Login(props) {    
     const [user, setUser] = useState(); 
     // const [yourID, setYourID] = useState()
     // console.log("login props",props)
-    
+    function joinCallback(messages,room){
+        console.log("aaaa",messages,room)
+        const newMessages = immer(messages, draft => {
+            draft[room] = room
+        })
+        props.dispatch({
+            type:"MESSAGE",
+            payload: newMessages
+        })
+    }
 
     let submitHandle = (e) =>{
         e.preventDefault()
@@ -42,6 +52,7 @@ function Login(props) {
 
 export default connect(function(state,props){
     return {
-        logged: state?.isloggedin
+        logged: state?.isloggedin,
+        messages: state?.messages
     }
 })(Login)

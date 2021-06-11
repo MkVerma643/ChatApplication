@@ -7,7 +7,7 @@ const io = require('socket.io')(server,{
 })
 let users = []
 const messages = {
-    general: [],
+    general: []
 }
 
 io.on('connection', socket =>{
@@ -32,16 +32,16 @@ io.on('connection', socket =>{
     //new user joined
 
     //joining room
-    socket.on('join room',(roomName,) => {
+    socket.on('join room',(roomName) => {
         console.log("room joineddd",roomName)
         socket.join(roomName)
-        // cb(message[roomName])
+        // cb(messages[roomName])
     } ) 
     //joining room 
     
     //Send Message 
     socket.on('send message', ({content,to,sender,chatName, isChannel}) => {
-        console.log("sending message.....",content)
+        console.log("sending message.....",content," to: ",to)
         if(isChannel) {
             const payload = {
                 content,

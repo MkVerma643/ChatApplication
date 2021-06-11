@@ -12,7 +12,7 @@ export class Users extends Component {
   }
 
    SetGeneralChat = () => {
-    console.log("room set")
+    // console.log("room set")
     this.props.dispatch({
       type: "CURRENT CHAT",
       payload: {
@@ -24,19 +24,6 @@ export class Users extends Component {
   }
 
    SetUserChat = user => {
-     console.log("checkkkk......",this.props.messages[this.props.currentChat.chatName])
-    if(this.props.messages[this.props.currentChat.chatName] === null){
-      console.log("set krunnn....")
-      const newMessages = immer(this.props.messages, draft => {
-        draft[this.props.currentChat.chatName] = []
-      })
-      console.log("set krunnn....")
-      this.props.dispatch({
-        type:"MESSAGE",
-        payload: newMessages
-      })
-    }
-    console.log("user set",user)
     this.props.dispatch({
       type: "CURRENT CHAT",
       payload: {
@@ -45,6 +32,20 @@ export class Users extends Component {
         receiverId: user.id
       }
     })
+    //  console.log("checkkkk......",this.props.currentChat.chatName)
+    if(!this.props.messages[user.name]){
+      // console.log("set krunnn....")
+      let newMessages = immer(this.props.messages, draft => {
+        draft[user.name] = []
+      })
+      this.props.dispatch({
+        type: "MESSAGES",
+        payload: newMessages
+      })
+      // console.log("user set",newMessages)
+    }
+   
+    
   }
   render() {
     return (

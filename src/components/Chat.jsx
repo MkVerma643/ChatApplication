@@ -5,11 +5,12 @@ import Users from "./Users";
 import { connect } from "react-redux";
 import socket from './socket'
 import immer from "immer";
+import  ScrollMePlease from "react-scrollable-feed"
 
 // const socketRef = useRef()
 
 function Chat(props) {
-  // console.log("yrssss",props?.messages[props.currentChat.chatName])
+  // console.log("yrssss",props?.messages? props.message[props?.currentChat?.chatName]: "j")
   if(!props.isloggedin){
     props.history.push('/')
   }
@@ -31,6 +32,23 @@ function Chat(props) {
       payload: allusers
     })
   });
+  socket.on("new message",({content, sender,chatName}) => {
+    const newMessages = immer(props.messages,draft => {
+      if(draft[chatName]) {
+        draft[chatName].push({content, sender})
+      }
+      else {
+        draft[chatName] = [{content, sender}]
+      }
+      
+
+    })
+    // console.log("new message received",newMessages)
+    props.dispatch({
+      type: "MESSAGES",
+      payload: newMessages
+    })
+  })
 
   const sendMessage = (e) => {
     e.preventDefault()
@@ -44,11 +62,10 @@ function Chat(props) {
     socket.emit("send message", payload)
     const newMessages = immer(props.messages, draft => {
       draft[props.currentChat.chatName].push({
-        sender:props.user,
+        sender:props.user, 
         content: message
       })
     })
-    
     props.dispatch({
       type: "MESSAGES",
       payload:newMessages
@@ -63,9 +80,10 @@ function Chat(props) {
           <div class="inbox_msg">
             <Users  />
             <div class="mesgs">
-              <h4 style={{textAlign:'center'}}>{props?.currentChat?.chatName}</h4>
+              <h4> <AccountCircleIcon fontSize={'large'}/>{props?.currentChat?.chatName}</h4>
               <div class="msg_history">
-                {props?.messages[props.currentChat.chatName] && props?.messages[props.currentChat.chatName].map((each,index) => {
+               <ScrollMePlease>
+               {props?.messages[props?.currentChat?.chatName] && props?.messages[props.currentChat.chatName].map((each,index) => {
                     if(each.sender === props?.user){
                       return (
                       <div class="outgoing_msg">
@@ -93,6 +111,7 @@ function Chat(props) {
                     }
                   
                 })}
+               </ScrollMePlease>
              
               </div>
               <div class="type_msg">
