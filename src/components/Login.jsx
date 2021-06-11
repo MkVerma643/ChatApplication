@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import {connect} from 'react-redux'
-import io from 'socket.io-client'
-
-const socket = io("http://localhost:7000");
+import socket from './socket'
+import {login} from '../reduxstore/thunk'
 function Login(props) {    
     const [user, setUser] = useState(); 
-    const [yourID, setYourID] = useState()
-    console.log("login props",props)
+    // const [yourID, setYourID] = useState()
+    // console.log("login props",props)
     
-    useEffect(()=>{
-        socket.on("yourid",id => {
-            setYourID(id)
-         })
-    })
 
     let submitHandle = (e) =>{
         e.preventDefault()
-        let userData = {
-            name: user,
-            id: yourID
-        }
-        socket.emit("join",userData)
+        socket.emit("join",user)
+        socket.emit('join room','general')
+        props.dispatch(login(user))
         // socket.emit("Join",userData)
-        props.dispatch({
-            type:"USER",
-            payload: userData
-        })
+        
         props.history.push('/chat')
        
     }

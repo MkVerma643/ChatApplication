@@ -14,15 +14,11 @@ function Chat(props) {
   const params = useParams()
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  const [yourID, setYourID] = useState();
   const [people, setPeople] = useState([]);
   console.log("chatttttsssss", chat);
   useEffect(() => {
-    socket.on("yourid", (id) => {
-      setYourID(id);
-    });
 
-    socket.on("listen-client", (user) => {
+    socket.on("new-client", (user) => {
       console.log("new online user found.....", user);
       setPeople(user);
     });
@@ -61,12 +57,14 @@ function Chat(props) {
   return (
     <>
       <div class="container">
-        <h3 class=" text-center">My id..{props?.user?.name}</h3>
+        <h3 class=" text-center">Welcome {props?.user}</h3>
         <div class="messaging">
           <div class="inbox_msg">
             <Users people={people} />
             <div class="mesgs">
+            <h4> {"Public"}</h4>
               <div class="msg_history">
+                
                 {chat.map((msg) => {
                   if (msg.id === props.user.id) {
                     return (

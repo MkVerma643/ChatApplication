@@ -8,10 +8,7 @@ import { connect } from "react-redux";
 import io from 'socket.io-client'
 import { BrowserRouter, Route } from "react-router-dom";
 
-// const socket = socketClient("http://localhost:8080")
-// socket.on('connect', ()=>{  
-  
-// })
+
 
 function App(props) {
   return (
@@ -22,9 +19,8 @@ function App(props) {
         </a>
       </nav>
       <BrowserRouter>
-        <Route exact path="/chat" component={Home}></Route>
+        <Route exact path="/chat" component={Chat}></Route>
         <Route exact path="/" component={Login}></Route>
-        <Route exact path="/chat/:id"><Home custom={true}/></Route>
       </BrowserRouter>
       {/* <Home/> */}
         {/* {
@@ -34,6 +30,7 @@ function App(props) {
   );
 }
 export default connect(function(state,props){
+  console.log("state",state)
   return {
     isloggedin: state?.isloggedin
   }

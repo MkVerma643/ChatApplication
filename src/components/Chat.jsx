@@ -3,70 +3,75 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import SendIcon from "@material-ui/icons/Send";
 import Users from "./Users";
 import { connect } from "react-redux";
-import io from 'socket.io-client'
+import socket from './socket'
+import immer from "immer";
 
-const socket = io('http://localhost:7000')
-const userName = 'User '+parseInt(Math.random()*10)
+// const socketRef = useRef()
 
 function Chat(props) {
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState()
-  const [yourID, setYourID] = useState()
-  const [people, setPeople] = useState()
-
-  // console.log("your message",messages)
-
-  useEffect(() =>{
-   
-    socket.on("yourid",id => {
-       setYourID(id)
-    })
-    socket.on("message", (message)=> {
-      receivedMessage(message)
-    })
-
-  },[])
-  const receivedMessage = (message) => {
-    setMessages(preMessage => [...preMessage, message])
+  // console.log("yrssss",props?.messages[props.currentChat.chatName])
+  if(!props.isloggedin){
+    props.history.push('/')
   }
-  
-  const sendMessage = (e) => {
-    e.preventDefault()
-    console.log("you clicked the btn.....")
-    const msgData = {
-      msg: message,
-      id: yourID
-    }
-    console.log("ye msg hai:",msgData)
-    setMessage("")
-    socket.on("send-message",msgData)
-   
-    socket.on("test",string => {
-      console.log(string)
+  socket.on("newuser",(allusers) => {
+    props.dispatch({
+      type:"USERS",
+      payload:allusers
     })
     
-  }
-  const handleChange = (e) =>{
-    // console.log("yahaaaaan",e.target.value)
-    setMessage(e.target.value)
-  }
+})
+ 
 
+  const [message, setMessage] = useState("")
+  
+  socket.on("new-client", (allusers) => {
+    console.log("new online user found.....", allusers);
+    props.dispatch({
+      type: "USERS",
+      payload: allusers
+    })
+  });
+
+  const sendMessage = (e) => {
+    e.preventDefault()
+    const payload = {
+      content: message,
+      to: props.currentChat.isChannel? props.currentChat.chatName : props.currentChat.receiverId,
+      sender: props.user,
+      chatName: props.currentChat.chatName,
+      isChannel: props.currentChat.isChannel
+    }
+    socket.emit("send message", payload)
+    const newMessages = immer(props.messages, draft => {
+      draft[props.currentChat.chatName].push({
+        sender:props.user,
+        content: message
+      })
+    })
+    
+    props.dispatch({
+      type: "MESSAGES",
+      payload:newMessages
+    })
+      setMessage("")
+  }
   return (
     <>
       <div class="container">
-        <h3 class=" text-center">My id...( {yourID} )</h3>
+        <h3 class=" text-center">Welcome {props.user}</h3>
         <div class="messaging">
           <div class="inbox_msg">
             <Users  />
             <div class="mesgs">
+              <h4 style={{textAlign:'center'}}>{props?.currentChat?.chatName}</h4>
               <div class="msg_history">
-                {messages.map((each,index) => {
-                    if(each.id === yourID){
+                {props?.messages[props.currentChat.chatName] && props?.messages[props.currentChat.chatName].map((each,index) => {
+                    if(each.sender === props?.user){
                       return (
                       <div class="outgoing_msg">
                       <div class="sent_msg">
-                        <p>Test which is a new approach to have all solutions</p>
-                        <span class="time_date"> 11:01 AM | June 9</span>{" "}
+                        <p>{each.content}</p>
+                        <span class="time_date"> {each.sender}</span>{" "}
                       </div>
                     </div>
                     )
@@ -79,8 +84,8 @@ function Chat(props) {
                         </div>
                         <div class="received_msg">
                           <div class="received_withd_msg">
-                            <p>Test, is a new approach to have all sol</p>
-                            <span class="time_date"> 11:01 AM | Yesterday</span>
+                            <p>{each.content}</p>
+                            <span class="time_date"> {each.sender}</span>
                           </div>
                         </div>
                       </div>
@@ -98,7 +103,7 @@ function Chat(props) {
                     class="write_msg"
                     name="msg"
                     value={message}
-                    onChange={handleChange}
+                    onChange={(e) =>setMessage(e.target.value)}
                     placeholder="Type a message"
                   />
                   <button  class="msg_send_btn">
@@ -117,6 +122,10 @@ function Chat(props) {
 
 export default connect((state,props) =>{
   return {
-    user : state?.user
+    user : state?.user,
+    messages: state?.messages,
+    allusers: state?.allusers,
+    isloggedin:state?.isloggedin,
+    currentChat:state?.CurrentChat
   }
 })(Chat);

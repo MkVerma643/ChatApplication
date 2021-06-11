@@ -1,66 +1,113 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import immer from 'immer'
+import React, { Component } from 'react'
 
-function Users(props) {
-console.log("asd",props.people)
+export class Users extends Component {
 
+  constructor(props){
+    super(props)
+  }
 
-  return (
-    <>
+   SetGeneralChat = () => {
+    console.log("room set")
+    this.props.dispatch({
+      type: "CURRENT CHAT",
+      payload: {
+        isChannel: true,
+        chatName: "general",
+        receiverId: ""
+      }
+    })
+  }
+
+   SetUserChat = user => {
+     console.log("checkkkk......",this.props.messages[this.props.currentChat.chatName])
+    if(this.props.messages[this.props.currentChat.chatName] === null){
+      console.log("set krunnn....")
+      const newMessages = immer(this.props.messages, draft => {
+        draft[this.props.currentChat.chatName] = []
+      })
+      console.log("set krunnn....")
+      this.props.dispatch({
+        type:"MESSAGE",
+        payload: newMessages
+      })
+    }
+    console.log("user set",user)
+    this.props.dispatch({
+      type: "CURRENT CHAT",
+      payload: {
+        isChannel: false,
+        chatName: user.name,
+        receiverId: user.id
+      }
+    })
+  }
+  render() {
+    return (
+      <>
       <div class="inbox_people">
         <div class="headind_srch">
           <div class="recent_heading">
-            <h4>Online</h4>
-          </div>
-          <div class="srch_bar">
-            <div class="stylish-input-group">
-              <input type="text" class="search-bar" placeholder="Search" />
-              <span class="input-group-addon">
-                <button type="button">
-                  {" "}
-                  <i class="fa fa-search" aria-hidden="true"></i>{" "}
-                </button>
-              </span>{" "}
-            </div>
+            <h4>Group</h4>
           </div>
         </div>
         <div class="inbox_chat">
-          {/* <div class="chat_list active_chat">
-              <div class="chat_people">
-                <div class="chat_img"> <AccountCircleIcon/> </div>
-                <div class="chat_ib">
-                  <h5>Arish Azmat <span class="chat_date">0</span></h5>
-                  <p>some text.</p>
-                </div>
-              </div>
-            </div> */}
-          {props.people.length > 0? props.people.map((user) => {
-            //add here a link which will redirect to http:localhost:3000/chat/id for p2p chat
-          // if(props.user.name != user.name){
-            return (
-              <Link to={`/chat/${user.name}`}>
-              <div class="chat_list" key={user.id}>
-              <div class="chat_people">
-                <div class="chat_img"> <AccountCircleIcon/> </div>
-                <div class="chat_ib">
-                  <h5>{user.name} <span class="chat_date">0</span></h5>
-                  <p>ID: {user.id}</p>
-                </div>
-              </div>
-            </div></Link>
-            )
-          // }
-          }) : ''}
+        <div class="chat_list" onClick={this.SetGeneralChat}>
+                      <div class="chat_people">
+                        <div class="chat_img">
+                          {" "}
+                          <AccountCircleIcon />{" "}
+                        </div>
+                        <div class="chat_ib">
+                          <h5>
+                            General <span class="chat_date">0</span>
+                          </h5>
+                          <p>Messages on this receives by everyone</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="headind_srch">
+          <div class="recent_heading">
+            <h4>Online</h4>
+          </div>
+        </div>
+          {this.props?.allusers?.map((user) => {
+                if (this.props.user != user.name) {
+                  return (
+                    <div class="chat_list" key={user.id} onClick={() => this.SetUserChat(user)}>
+                      <div class="chat_people">
+                        <div class="chat_img">
+                          {" "}
+                          <AccountCircleIcon />{" "}
+                        </div>
+                        <div class="chat_ib">
+                          <h5>
+                            {user.name} <span class="chat_date">0</span>
+                          </h5>
+                          <p>ID: {user.id}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })
+            }
         </div>
       </div>
     </>
-  );
+    )
+  }
 }
 
-export default connect(function(state,props){
+export default connect(function (state, props) {
   return {
-    user: state?.user
-  }
+    user: state?.user,
+    allusers:state?.allusers,
+    messages:state?.messages,
+    currentChat: state?.CurrentChat
+  };
 })(Users);
