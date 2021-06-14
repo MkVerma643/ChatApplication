@@ -7,6 +7,11 @@ const reducerFun = (state = {messages : {general: []}}, action) => {
             state = {...state}
             state["isloggedin"] = true 
             state["user"] = action.payload
+            state['CurrentChat'] = {
+                isChannel: true,
+                chatName: "general",
+                receiverId: ""
+              }
             return state
         }
         case "CURRENT CHAT":{

@@ -16,8 +16,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 Enter Username in the browser '/' route 
 and you can see on the left panel people who are currently online
-you can directly broadcast a message (http://localhost:3000/chat)
-send a custome message to a room (http://localhost:3000/chat/id)
+There is a pre-defined general room to send messages to all active users which they can see. Send a custom message by selecting a user from a left panel
+
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.

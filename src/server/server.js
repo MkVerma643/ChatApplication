@@ -14,9 +14,9 @@ io.on('connection', socket =>{
     console.log('connection made successfully',socket.id)
 
                 //test
-                socket.on("test",test => {
-                    console.log("testtttt success",test)
-                })
+                // socket.on("test",test => {
+                //     console.log("testtttt success",test)
+                // })
                 //test
 
     //new user joined
