@@ -21,7 +21,7 @@ function App(props) {
         </a>
       </nav>
       <BrowserRouter>
-        <Route exact path="/chat" component={ props.isloggedin? Chat : Login}></Route>
+        <Route exact path="/chat" component={ props.isloggedin? Chat : Login }></Route>
         <Route exact path="/" component={Login}></Route>
       </BrowserRouter>
       {/* <Home/> */}
