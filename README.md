@@ -4,10 +4,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run: \
 This Project Doesn't have any database instead the required information is stored in the socket server itself. \
 
-
+In the project directory, you can run: \
 
 
 ### `npm start` to start the react-front-end
