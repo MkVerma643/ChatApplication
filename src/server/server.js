@@ -75,7 +75,7 @@ io.on('connection', socket =>{
 })
 
 server.listen(8080,()=>{
-    console.log('I am listening at port: 7000)');
+    console.log('I am listening at port: 8080)');
 })
 
 
