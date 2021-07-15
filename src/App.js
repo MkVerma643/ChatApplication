@@ -13,7 +13,7 @@ function App(props) {
     <>
       <nav className="navbar navbar-dark bg-dark p-2 ">
         <a className="navbar-brand" href="#">
-          Chat Application
+          WebChat
         </a>
       </nav>
       <BrowserRouter>
