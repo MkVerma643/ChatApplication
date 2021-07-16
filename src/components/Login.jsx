@@ -45,7 +45,7 @@ function Login(props) {
               placeholder="Username"
             />
             <br />
-            <button class="bth btn-dark form-control">Join</button>
+            <button className="bth btn-dark form-control">Join</button>
           </form>
         </div>
       </div>
