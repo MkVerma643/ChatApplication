@@ -12,7 +12,7 @@ import ScrollMePlease from "react-scrollable-feed";
 function Chat(props) {
   console.log("yrssss", props?.messages);
   socket.on("newuser", (allusers) => {
-    console.log("asdasdasdsadasdasd",props)
+    console.log("asdasdasdsadasdasd", props);
     props.dispatch({
       type: "USERS",
       payload: allusers,
@@ -69,28 +69,28 @@ function Chat(props) {
   };
   return (
     <>
-      <div class="container">
-        <h3 class=" text-center">Welcome {props.user}</h3>
-        <div class="messaging">
-          <div class="inbox_msg">
+      <div className="container">
+        <h3 className=" text-center">Welcome {props.user}</h3>
+        <div className="messaging">
+          <div className="inbox_msg">
             <Users />
-            <div class="mesgs">
+            <div className="mesgs">
               <h4>
                 {" "}
                 <AccountCircleIcon fontSize={"large"} />
                 {props?.currentChat?.chatName}
               </h4>
-              <div class="msg_history">
+              <div className="msg_history">
                 <ScrollMePlease>
                   {props?.messages[props?.currentChat.chatName]
                     ? props?.messages[props.currentChat.chatName].map(
                         (each, index) => {
                           if (each.sender === props?.user) {
                             return (
-                              <div class="outgoing_msg">
-                                <div class="sent_msg">
+                              <div className="outgoing_msg">
+                                <div className="sent_msg">
                                   <p>{each.content}</p>
-                                  <span class="time_date">
+                                  <span className="time_date">
                                     {" "}
                                     {each.sender}
                                   </span>{" "}
@@ -99,14 +99,14 @@ function Chat(props) {
                             );
                           } else {
                             return (
-                              <div class="incoming_msg">
-                                <div class="incoming_msg_img">
+                              <div className="incoming_msg">
+                                <div className="incoming_msg_img">
                                   <AccountCircleIcon />
                                 </div>
-                                <div class="received_msg">
-                                  <div class="received_withd_msg">
+                                <div className="received_msg">
+                                  <div className="received_withd_msg">
                                     <p>{each.content}</p>
-                                    <span class="time_date">
+                                    <span className="time_date">
                                       {" "}
                                       {each.sender}
                                     </span>
@@ -120,18 +120,18 @@ function Chat(props) {
                     : " "}
                 </ScrollMePlease>
               </div>
-              <div class="type_msg">
-                <div class="input_msg_write">
+              <div className="type_msg">
+                <div className="input_msg_write">
                   <form onSubmit={sendMessage}>
                     <input
                       type="text"
-                      class="write_msg"
+                      className="write_msg"
                       name="msg"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Type a message"
                     />
-                    <button class="msg_send_btn">
+                    <button className="msg_send_btn">
                       <SendIcon style={{ color: "#fff" }} />
                     </button>
                   </form>

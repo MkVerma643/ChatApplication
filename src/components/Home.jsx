@@ -11,13 +11,12 @@ function Chat(props) {
     props.history.push("/");
   }
   console.log("chatssss", props);
-  const params = useParams()
+  const params = useParams();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const [people, setPeople] = useState([]);
   console.log("chatttttsssss", chat);
   useEffect(() => {
-
     socket.on("new-client", (user) => {
       console.log("new online user found.....", user);
       setPeople(user);
@@ -31,16 +30,15 @@ function Chat(props) {
   const sendMessage = (e) => {
     e.preventDefault();
     if (props.custom) {
-      console.log("parmas",params.id)
+      console.log("parmas", params.id);
       console.log(message);
       const msgData = {
-      msg: message,
-      id: props.user.id,
-      time: new Date(),
-      to: params.id
-    };
-    socket.emit("custom-message", msgData);
-
+        msg: message,
+        id: props.user.id,
+        time: new Date(),
+        to: params.id,
+      };
+      socket.emit("custom-message", msgData);
     } else {
       console.log(message);
       const msgData = {
@@ -56,35 +54,34 @@ function Chat(props) {
 
   return (
     <>
-      <div class="container">
-        <h3 class=" text-center">Welcome {props?.user}</h3>
-        <div class="messaging">
-          <div class="inbox_msg">
+      <div className="container">
+        <h3 className=" text-center">Welcome {props?.user}</h3>
+        <div className="messaging">
+          <div className="inbox_msg">
             <Users people={people} />
-            <div class="mesgs">
-            <h4> {"Public"}</h4>
-              <div class="msg_history">
-                
+            <div className="mesgs">
+              <h4> {"Public"}</h4>
+              <div className="msg_history">
                 {chat.map((msg) => {
                   if (msg.id === props.user.id) {
                     return (
-                      <div class="outgoing_msg" key={msg.id}>
-                        <div class="sent_msg">
+                      <div className="outgoing_msg" key={msg.id}>
+                        <div className="sent_msg">
                           <p>{msg.msg}</p>
-                          <span class="time_date"> {msg.time}</span>{" "}
+                          <span className="time_date"> {msg.time}</span>{" "}
                         </div>
                       </div>
                     );
                   } else {
                     return (
-                      <div class="incoming_msg" key={msg.id}>
-                        <div class="incoming_msg_img">
+                      <div className="incoming_msg" key={msg.id}>
+                        <div className="incoming_msg_img">
                           <AccountCircleIcon />
                         </div>
-                        <div class="received_msg">
-                          <div class="received_withd_msg">
+                        <div className="received_msg">
+                          <div className="received_withd_msg">
                             <p> {msg.msg}</p>
-                            <span class="time_date">{msg.time}</span>
+                            <span className="time_date">{msg.time}</span>
                           </div>
                         </div>
                       </div>
@@ -92,8 +89,8 @@ function Chat(props) {
                   }
                 })}
               </div>
-              <div class="type_msg">
-                <div class="input_msg_write">
+              <div className="type_msg">
+                <div className="input_msg_write">
                   <form onSubmit={sendMessage}>
                     <input
                       type="text"
@@ -105,7 +102,7 @@ function Chat(props) {
                       }}
                       required
                     ></input>
-                    <button class="msg_send_btn">
+                    <button className="msg_send_btn">
                       <SendIcon style={{ color: "#fff" }} />
                     </button>
                   </form>
