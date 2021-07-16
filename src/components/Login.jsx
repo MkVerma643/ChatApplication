@@ -35,7 +35,7 @@ function Login(props) {
         <div className="col-md-6">
           <form onSubmit={submitHandle} style={{ width: 500 }}>
             <h2 className="text-center">Hop In</h2>
-            <label for="Username" style={{ fontSize: 20, marginRight: 10 }}>
+            <label htmlFor="Username" style={{ fontSize: 20, marginRight: 10 }}>
               Username:{" "}
             </label>
             <input
